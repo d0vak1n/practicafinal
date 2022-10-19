@@ -1,7 +1,8 @@
+import { Nombrepais } from "./nombrepais";
 export class Pais{
 
 
-    common:string;
+    name:Nombrepais;
     capital:string;
     population:number;
     region:string;   // continente

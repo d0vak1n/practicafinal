@@ -1,1 +1,18 @@
-<p>listado-paises works!</p>
+<h2>Listado Paises</h2>
+
+<table>
+    <tr>
+        <th>País</th>
+        <th>Capital</th>
+        <th>Habitantes</th>
+        <th>Continente</th>
+        <th>Código Internacional</th>
+    </tr>
+    <tr *ngFor="let pais of paises">
+        <td>{{pais.name.common}}</td>
+        <td>{{pais.capital}}</td>
+        <td>{{pais.population}}</td>
+        <td>{{pais.region}}</td>
+        <td>{{pais.ccn3}}</td>
+    </tr>
+</table>
