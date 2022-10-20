@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { from, map, Observable, toArray } from 'rxjs';
 import { Pais } from 'src/app/model/pais';
 import { PaisService } from 'src/app/services/pais.service';
 
@@ -13,20 +13,38 @@ import { PaisService } from 'src/app/services/pais.service';
 export class ListadoPaisesComponent implements OnInit {
 
 
-  paises:Pais[] = undefined;
-  printColumnas:string[] = undefined;
+  paises: Pais[] = undefined;
 
-  constructor(private paisService:PaisService) {}
+
+  constructor(private paisService: PaisService) { }
 
 
   ngOnInit() {
 
-    let observable:Observable<Pais[]> = this.paisService.getAll();
-    
-    observable.subscribe(datos => {
-      this.paises = datos;
-    });
-    
-  }
+    let stream1: Observable<Pais[]> = this.paisService.getAll();
 
+    stream1.subscribe(
+      datosEnBruto => {
+        from(datosEnBruto)
+          .pipe(
+            map(paisEnBruto => {
+              let pais = new Pais();
+              pais.name.common = paisEnBruto.name.common;
+              pais.region = paisEnBruto.region;
+              pais.capital = paisEnBruto.capital;
+              pais.population = paisEnBruto.population;
+
+              return pais;
+            }
+            ),
+            toArray()
+          ).subscribe(
+              arrayPaises => {
+                this.paises = arrayPaises;
+              }
+            )
+
+      });
+
+  }
 }
